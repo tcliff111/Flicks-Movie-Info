@@ -1,6 +1,6 @@
 # Project 1 - Flicks
 
-Flicks is a movies app using the [The Movie Database API](http://docs.themoviedb.apiary.io/#).
+Flicks is a movies app made using data from the [The Movie Database API](http://docs.themoviedb.apiary.io/#).
 It is still under development and the rest of this README is currently not reflective of the current product.
 
 Time spent: **X** hours spent in total
@@ -45,7 +45,7 @@ Describe any challenges encountered while building the app.
 
 ## License
 
-    Copyright [yyyy] [name of copyright owner]
+    Copyright 2016 Thomas Clifford
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
