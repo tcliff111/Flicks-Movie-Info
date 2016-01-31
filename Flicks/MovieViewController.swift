@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import AFNetworking
+import MBProgressHUD
 
 class MovieViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     @IBOutlet weak var tableView: UITableView!
@@ -14,9 +16,16 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let refreshController = UIRefreshControl()
+        refreshController.addTarget(self, action: "refreshControlAction:", forControlEvents: UIControlEvents.ValueChanged)
+        tableView.insertSubview(refreshController, atIndex: 0)
+        
+
         tableView.dataSource = self
         tableView.delegate = self
 
+        
         let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
         let url = NSURL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")
         let request = NSURLRequest(
@@ -30,6 +39,8 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
             delegateQueue: NSOperationQueue.mainQueue()
         )
         
+        MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        
         let task: NSURLSessionDataTask = session.dataTaskWithRequest(request,
             completionHandler: { (dataOrNil, response, error) in
                 if let data = dataOrNil {
@@ -42,6 +53,7 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
                             
                     }
                 }
+                MBProgressHUD.hideHUDForView(self.view, animated: true)
         })
         task.resume()
     }
@@ -68,9 +80,45 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
         
         cell.title.text = title
         cell.overview.text = overview
+        if let url = movie["poster_path"] as? String {
+        let url = NSURL(string: "http://image.tmdb.org/t/p/w500"+(movie["poster_path"] as! String))
+        cell.moviePoster.setImageWithURL(url!)
+        }
         
         return cell
     }
 
-
+    func refreshControlAction(refreshController: UIRefreshControl) {
+        
+        let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
+        let url = NSURL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")
+        let request = NSURLRequest(
+            URL: url!,
+            cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData,
+            timeoutInterval: 10)
+        
+        let session = NSURLSession(
+            configuration: NSURLSessionConfiguration.defaultSessionConfiguration(),
+            delegate:nil,
+            delegateQueue:NSOperationQueue.mainQueue()
+        )
+        
+        let task : NSURLSessionDataTask = session.dataTaskWithRequest(request,
+            completionHandler: { (dataOrNil, response, error) in
+                if let data = dataOrNil {
+                    if let responseDictionary = try! NSJSONSerialization.JSONObjectWithData(
+                        data, options:[]) as? NSDictionary {
+                            print("response: \(responseDictionary)")
+                            
+                            self.results = responseDictionary["results"] as! [NSDictionary]
+                            self.tableView.reloadData()
+                            
+                    }
+                }
+                refreshController.endRefreshing()
+        });
+        task.resume()
+    }
+    
+    
 }
