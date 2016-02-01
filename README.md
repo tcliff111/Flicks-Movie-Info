@@ -1,7 +1,7 @@
 # Project 1 - Flicks
 
 Flicks is a movies app made using data from the [The Movie Database API](http://docs.themoviedb.apiary.io/#).
-It is still under development and the rest of this README is currently not reflective of the current product.
+It is still under development and this README is only reflective of the current state of the product.
 
 Time spent: 4 hours spent in total
 
@@ -28,8 +28,10 @@ The following **additional** features are implemented:
 
 Please list two areas of the assignment you'd like to **discuss further with your peers** during the next class (examples include better ways to implement something, how to extend your app in certain ways, etc):
 
-1. 
-2. 
+1. I would like to discuss the addTarget() method that was used to add the refresh functionality and explore more about
+how that method is used in different contexts.
+2. I also would like to talk about how you would connect a different view controller to each cell of the table view such
+that you coukd view details about each movie in it's own view controller.
 
 ## Video Walkthrough 
 
@@ -42,6 +44,8 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 ## Notes
 
 Describe any challenges encountered while building the app.
+
+The biggest challenge likely was understanding how data was added to table cells.
 
 ## License
 
