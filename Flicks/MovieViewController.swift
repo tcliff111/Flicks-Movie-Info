@@ -84,7 +84,7 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
         let url = NSURL(string: "http://image.tmdb.org/t/p/w500"+(movie["poster_path"] as! String))
         cell.moviePoster.setImageWithURL(url!)
         }
-        
+
         return cell
     }
 
@@ -118,6 +118,15 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
                 refreshController.endRefreshing()
         });
         task.resume()
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        let cell = sender as! UITableViewCell
+        let indexPath = tableView.indexPathForCell(cell)
+        let movie = results![indexPath!.row]
+        let detailViewController = segue.destinationViewController as! DetailViewController
+        detailViewController.movie = movie
+        
     }
     
     
