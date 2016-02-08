@@ -5,6 +5,9 @@
 //  Created by Thomas Clifford on 1/25/16.
 //  Copyright © 2016 Thomas Clifford. All rights reserved.
 //
+//Icon Credit:
+// https://thenounproject.com/Nunolein/
+// https://thenounproject.com/jmelton.jacob/
 
 import UIKit
 import AFNetworking
@@ -13,6 +16,7 @@ import MBProgressHUD
 class MovieViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     @IBOutlet weak var tableView: UITableView!
     var results: [NSDictionary]?
+    var endpoint: String!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,7 +31,7 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
 
         
         let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
-        let url = NSURL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")
+        let url = NSURL(string: "https://api.themoviedb.org/3/movie/\(endpoint)?api_key=\(apiKey)")
         let request = NSURLRequest(
             URL: url!,
             cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData,
@@ -84,6 +88,7 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
         let url = NSURL(string: "http://image.tmdb.org/t/p/w500"+(movie["poster_path"] as! String))
         cell.moviePoster.setImageWithURL(url!)
         }
+        cell.selectionStyle = .Gray
 
         return cell
     }
@@ -91,7 +96,7 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
     func refreshControlAction(refreshController: UIRefreshControl) {
         
         let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
-        let url = NSURL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")
+        let url = NSURL(string: "https://api.themoviedb.org/3/movie/\(endpoint)?api_key=\(apiKey)")
         let request = NSURLRequest(
             URL: url!,
             cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData,
@@ -127,6 +132,10 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
         let detailViewController = segue.destinationViewController as! DetailViewController
         detailViewController.movie = movie
         
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated:true)
     }
     
     

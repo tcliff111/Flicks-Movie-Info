@@ -10,6 +10,8 @@ import UIKit
 
 class DetailViewController: UIViewController {
 
+    @IBOutlet weak var infoView: UIView!
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var posterView: UIImageView!
     @IBOutlet weak var overviewLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
@@ -18,8 +20,10 @@ class DetailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        scrollView.contentSize = CGSize(width: scrollView.frame.size.width, height: infoView.frame.size.height + infoView.frame.origin.y)
         let title = movie["title"] as! String
         let overview = movie["overview"] as! String
+        
         if let poster_path = movie["poster_path"] as? String {
             let urlString = "http://image.tmdb.org/t/p/w500/" + poster_path
             let url = NSURL(string: urlString)
@@ -29,7 +33,9 @@ class DetailViewController: UIViewController {
         
         
         titleLabel.text = title
+        
         overviewLabel.text = overview
+        overviewLabel.sizeToFit()
 
         // Do any additional setup after loading the view.
     }
